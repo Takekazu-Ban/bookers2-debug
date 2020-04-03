@@ -1,6 +1,14 @@
 Rails.application.routes.draw do
-  resources :users,only: [:show,:index,:edit,:update]
-  resources :books
+  devise_for :homes
+
   devise_for :users
   root 'home#top'
-  get 'home/about'
+  get 'home/about' => 'home#show'
+  get 'sign_up/:id' => 'devise/registrations#new'
+
+  resources :users,only: [:show,:index,:edit,:update]
+  resources :books
+
+
+
+end
