@@ -16,10 +16,11 @@ class BooksController < ApplicationController
   def show
   	@book = Book.find(params[:id])
     @nil = Book.new #本の投稿がないとき
+    @book_comment = BookComment.new
   end
 
   def index
-    @book = Book.new
+    @nil = Book.new
   	@books = Book.all #一覧表示するためにBookモデルの情報を全てくださいのall
   end
 
