@@ -45,9 +45,6 @@
       					<i class="glyphicon glyphicon-heart" aria-hidden="true" style="color: red;"></i>
       					<%= @book.favorites.count %>
     					<% end %>
-
-
-
   					</td>
 					<% else %>
   					<td>
@@ -66,17 +63,40 @@
 				</td>
 
 				<% if @book.user == current_user %>
+				<!-- 編集 -->
 				<td><%= link_to "Edit",edit_book_path(@book), class: "btn-sm btn-success edit_book_#{@book.id}" %></td>
-				<td><%= link_to "Destroy",@book, method: :delete, data: {confirm: "本当に削除してもよろしいですか？"}, class: "btn-sm btn-danger destroy_book_#{@book.id}" %></td>
+				<!-- 削除 -->
+				<td><%= link_to "Destroy",@book, method: :delete, data: {confirm: "本当に削除してもよろしいですか？"}, class: "btn-sm btn-danger destroy_book_#{@book.id}" %>
+				</td>
 				<% end %>
 			</tr>
 		</table>
 
-		<!-- コメント入力フォーム -->
-		<%= form_for(@book_comment) do |f| %>
-			<%= f.text_area :comment, class: "comment" %>
-			<%= f.submit "送信" %>
-		<% end %>
+			<% if @book.user == current_user %>
+				<!-- コメント入力フォーム -->
+				<%= form_for [@book,@book_comment] do |f| %>
+					<%= f.text_area :comment, class: "col-xs-12 comment" %>
+					<%= f.submit "送信" %>
+				<% end %>
+			<% end %>
+
+			<br>
+
+			<!-- コメント表示 -->
+			<h4>コメント一覧</h4>
+			<ol>
+    			<% @book.book_comments.each do |book_comment| %>
+        			<li class="comment">
+                    	<div class="comment-entry"><%= book_comment.comment %>
+
+
+                    	</div>
+                    		<!-- 削除 -->
+						<%= link_to "削除","/books/#{@book.id}/book_comments/#{book_comment.id}", method: :delete, data: {confirm: "本当に削除してもよろしいですか？"}, class: "destroy_book_#{@book_comment.id}" %>
+        			</li>
+    			<% end %>
+			</ol>
+
 </div>
 </div>
 
