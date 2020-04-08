@@ -1,0 +1,28 @@
+<!-- <<フォロワー 一覧>> -->
+<h2>Follower Users</h2>
+<!--follower一覧 -->
+<table class="table">
+	<thead>
+		<tr>
+			<th>image</th>
+			<th>name</th>
+			<th colspan="3"></th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td><%= attachment_image_tag(user.followers, :profile_image, :fill, 50, 50, fallback: "no-image-mini.jpg") %></td>
+			<td><%= followers.name%></td>
+
+			<td>フォロー数：<%= user.followers.count %></td>
+			<td>フォロワー数：<%= user.followers.count %></td>
+
+			</td>
+			<td><%= link_to "Show", user, class: "user_#{user.id}" %></td>
+		</tr>
+		<% end %>
+	</tbody>
+</table>
+<!--follower一覧 -->
+

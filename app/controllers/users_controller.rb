@@ -2,7 +2,13 @@ class UsersController < ApplicationController
   before_action :authenticate_user!
 	before_action :baria_user, only: [:edit,:update]
 
-   
+  def follow_user
+    
+  end
+
+  def follower_user
+    
+  end
 
 
   def show
