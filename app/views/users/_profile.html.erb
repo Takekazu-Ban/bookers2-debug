@@ -14,7 +14,7 @@
 		<tr>
 			<th>follows</th>
 			<th>
-			<%= link_to follow_user_path do %>
+			<%= link_to following_user_path(current_user.id) do %>
 				<%= user.followings.count %>
 			<% end %>
 			</th>
@@ -23,7 +23,7 @@
 		<tr>
 			<th>followers</th>
 			<th>
-			<%= link_to follower_user_path do %>
+			<%= link_to followers_user_path(current_user.id) do %>
 				<%= user.followers.count %></th>
 			<% end %>
 		</tr>
@@ -36,15 +36,14 @@
 	<% if current_user == user %>
 		<%= link_to '',edit_user_path(user), class: "col-xs-12 btn btn-default glyphicon glyphicon-wrench edit_user_#{user.id}" %>
 
-  	<% elsif current_user.following?(user) %>
-    	<%= form_for(current_user.relationships.find_by(follow_id: user.id), html: { method: :delete }) do |f| %>
-      	<%= hidden_field_tag :follow_id, user.id %>
+  	<% elsif current_user.following?(@user) %>
+    	<%= form_for(current_user.following_relationships.find_by(following_id: @user), html: { method: :delete }) do |f| %>
       	<%= f.submit 'フォローを外す', class: 'col-xs-6 btn btn-primary' %>
     	<% end %>
 
   	<% else %>
-    	<%= form_for(current_user.relationships.build) do |f| %>
-      	<%= hidden_field_tag :follow_id, user.id %>
+    	<%= form_for(current_user.following_relationships.build(following_id: @user.id)) do |f| %>
+      	<div><%= f.hidden_field :following_id %></div>
       	<%= f.submit 'フォローする', class: 'col-xs-6 btn btn-success' %>
     	<% end %>
 

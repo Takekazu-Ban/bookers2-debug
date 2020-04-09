@@ -2,12 +2,16 @@ class UsersController < ApplicationController
   before_action :authenticate_user!
 	before_action :baria_user, only: [:edit,:update]
 
-  def follow_user
-    
+  def following
+    @user = User.find(params[:id])
+    @users = @user.followings
+    render 'follew_users'
   end
 
-  def follower_user
-    
+  def followers
+    @user = User.find(params[:id])
+    @users = @user.followers
+    render 'follower_users'
   end
 
 

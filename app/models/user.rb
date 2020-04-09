@@ -8,29 +8,27 @@ class User < ApplicationRecord
   has_many :book_comments, dependent: :destroy
 
   ### フォロー機能アソシエーション ###
-  # アソシエーション フォロー
-  has_many :relationships
-  # user.followingsと書くとフォローしてるuserを取得できるようにする。
-  has_many :followings, through: :relationships, source: :follow
-  # アソシエーション フォロワー
-  has_many :reverse_of_relationships, class_name: 'Relationship', foreign_key: 'follow_id'
-  # userテーブルからフォロワーを取得
-  has_many :followers, through: :reverse_of_relationships, source: :user
+  # フォロー出来るユーザーを取得
+  has_many :following_relationships, foreign_key: "follower_id", class_name: "Relationship", dependent: :destroy
+  # フォローしてるユーザーを取得
+  has_many :followings, through: :following_relationships
+  # フォローされているユーザーを取得
+  has_many :follower_relationships, foreign_key: "following_id", class_name: "Relationship", dependent: :destroy
+  has_many :followers, through: :follower_relationships
 
-  # 重複、自分をフォローしているかどうか確認
-  def follow(other_user)
-    unless self == other_user
-      self.relationships.find_or_create_by(follow_id: other_user.id)
-    end
-  end
-
-  def unfollow(other_user)
-    relationship = self.relationships.find_by(follow_id: other_user.id)
-    relationship.destroy if relationship
-  end
-
+  # フォローしているか調べる関数
   def following?(other_user)
-    self.followings.include?(other_user)
+    following_relationships.find_by(following_id: other_user.id)
+  end
+
+  # フォローする関数
+  def follow!(other_user)
+    following_relationships.create!(following_id: other_user.id)
+  end
+
+  # フォローを外す関数
+  def unfollow!(other_user)
+    following_relationships.find_by(following_id: other_user.id).destroy
   end
 
   attachment :profile_image, destroy: false

@@ -1,9 +1,8 @@
 class Relationship < ApplicationRecord
-	# アソシエーション
-	belongs_to :user
 	# 存在しないクラス参照を防ぐ
-	belongs_to :follow, class_name: 'User'
+	belongs_to :follower, class_name: 'User'
+	belongs_to :following, class_name: "User"
 
-	validates :user_id, presence: true
-	validates :follow_id, presence: true
+	validates :follower_id, presence: :true
+	validates :following_id, presence: true
 end
