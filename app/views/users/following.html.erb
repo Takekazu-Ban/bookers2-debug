@@ -1,5 +1,5 @@
 <!-- <<フォロー 一覧>> -->
-<h2>Follow Users</h2>
+<h2>Follower Users</h2>
 <!--follower一覧 -->
 <table class="table">
 	<thead>
@@ -11,16 +11,25 @@
 	</thead>
 
 	<tbody>
+		<% @users.each do |user| %>
 		<tr>
-			<td><%= attachment_image_tag(user.followings, :profile_image, :fill, 50, 50, fallback: "no-image-mini.jpg") %></td>
-			<td><%= user.followings.name%></td>
+			<td><%= attachment_image_tag(user, :profile_image, :fill, 50, 50, fallback: "no-image-mini.jpg") %></td>
+			<td><%= user.name%></td>
 
 			<td>フォロー数：<%= user.followings.count %></td>
 			<td>フォロワー数：<%= user.followers.count %></td>
-			<td><%= link_to "フォローを外す", "relationships_path(current_user.id)" %></td>
+
+			<td>
+			<% if current_user.following?(user) %>
+				<%= link_to "フォローを外す", relationship_path(user.id) %>
+			<% elsif current_user != user %>
+				<%= link_to "フォローする", relationships_path %>
+			<% end %>
 			</td>
+
 			<td><%= link_to "Show", user, class: "user_#{user.id}" %></td>
 		</tr>
+		<% end %>
 	</tbody>
 </table>
 <!--follower一覧 -->

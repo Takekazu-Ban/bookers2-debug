@@ -31,7 +31,9 @@
 			<td>フォロワー数：<%= user.followers.count %></td>
 			<td>
 			<% if current_user.following?(user) %>
-			<%= link_to "フォローを外す", relationships_path(following.id) %>
+				<%= link_to "フォローを外す", relationship_path(user.id) %>
+			<% elsif current_user != user %>
+				<%= link_to "フォローする", relationships_path %>
 			<% end %>
 			</td>
 			<td><%= link_to "Show", user, class: "user_#{user.id}" %></td>
